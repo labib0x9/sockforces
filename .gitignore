@@ -4,3 +4,8 @@
 # Editor/IDE
 # .idea/
 # .vscode/
+
+cmd/test/*
+
+# github private key
+hikma-test-service.2026-08-12.private-key.pem
