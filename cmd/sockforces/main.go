@@ -12,7 +12,7 @@ import (
 )
 
 func main() {
-	cnf := config.GetConfig()
+	cnf := config.GetConfig(".env")
 
 	fmt.Println(cnf.Service)
 

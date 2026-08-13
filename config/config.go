@@ -28,8 +28,8 @@ var (
 	once          sync.Once
 )
 
-func loadConfig() {
-	if err := godotenv.Load(".env"); err != nil {
+func loadConfig(path string) {
+	if err := godotenv.Load(path); err != nil {
 		if !os.IsNotExist(err) {
 			log.Panic(err)
 		}
@@ -66,14 +66,14 @@ func loadConfig() {
 			AppId:          gAppId,
 			InstalationId:  gInsId,
 			PrivateKeyPath: fn("PRIVATE_KEY_PATH"),
-			Org: fn("ORGANIZATION"),
+			Org:            fn("ORGANIZATION"),
 		},
 	}
 }
 
-func GetConfig() *Config {
+func GetConfig(path string) *Config {
 	once.Do(func() {
-		loadConfig()
+		loadConfig(path)
 	})
 	return configuration
 }
