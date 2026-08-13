@@ -6,6 +6,7 @@ require (
 	github.com/bradleyfalzon/ghinstallation/v2 v2.19.0
 	github.com/google/go-github/v62 v62.0.0
 	github.com/joho/godotenv v1.5.1
+	go.uber.org/mock v0.6.0
 )
 
 require (
