@@ -2,24 +2,32 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"os/signal"
 	"syscall"
 	"time"
 
+	"github.com/go-playground/validator/v10"
 	"github.com/labib0x9/sockforces/config"
+	subservice "github.com/labib0x9/sockforces/internal/app/submissions"
+	"github.com/labib0x9/sockforces/internal/infra/github"
 	rest "github.com/labib0x9/sockforces/internal/transport/http"
+	subhandler "github.com/labib0x9/sockforces/internal/transport/http/handlers/submissions"
 )
 
 func main() {
 	cnf := config.GetConfig(".env")
 
-	fmt.Println(cnf.Service)
+	validate := validator.New()
+
+	gitClient := github.NewClient(cnf.Github)
+	gitRepo := github.NewGithubRepo(gitClient, cnf.Github)
+	subService := subservice.NewService(gitRepo)
+	subHandler := subhandler.NewHandler(subService, validate)
+
+	server := rest.NewServer(*subHandler)
 
 	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
 	defer stop()
-
-	server := rest.NewServer()
 
 	go func() {
 		server.Start(cnf)

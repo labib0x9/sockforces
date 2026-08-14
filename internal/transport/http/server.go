@@ -8,18 +8,22 @@ import (
 	"net/http"
 
 	"github.com/labib0x9/sockforces/config"
+	"github.com/labib0x9/sockforces/internal/transport/http/handlers/submissions"
 )
 
 type Server struct {
-	server http.Server
+	server     http.Server
+	subHandler submissions.Handler
 }
 
-func NewServer() *Server {
-	return &Server{}
+func NewServer(subHandler submissions.Handler) *Server {
+	return &Server{subHandler: subHandler}
 }
 
 func (s *Server) Start(cnf *config.Config) {
 	mux := http.NewServeMux()
+
+	s.subHandler.RegisterRoutes(mux)
 
 	addr := fmt.Sprintf("http://%s:%d", cnf.Addr, cnf.Port)
 	s.server = http.Server{
