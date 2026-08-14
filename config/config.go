@@ -14,6 +14,8 @@ type Github struct {
 	InstalationId  int64
 	PrivateKeyPath string
 	Org            string
+	HookSecret     string
+	HookURL        string
 }
 
 type Config struct {
@@ -67,6 +69,8 @@ func loadConfig(path string) {
 			InstalationId:  gInsId,
 			PrivateKeyPath: fn("PRIVATE_KEY_PATH"),
 			Org:            fn("ORGANIZATION"),
+			HookSecret:     fn("HOOK_SECRET"),
+			HookURL:        fn("HOOKURL"),
 		},
 	}
 }
