@@ -10,14 +10,15 @@ func (h *Handler) RegisterRoutes(mux *http.ServeMux, manager *middlewares.Manage
 	// have to change later
 	mux.Handle(
 		"POST /submissions/hook",
-		http.HandlerFunc(h.Hook),
+		manager.With(
+			http.HandlerFunc(h.Hook),
+			h.middlewares.HookVerification,
+		),
 	)
 
 	mux.Handle(
 		"POST /submissions/init",
-		manager.With(
-			http.HandlerFunc(h.InitRepository),
-			h.middlewares.HookVerification,
-		),
+
+		http.HandlerFunc(h.InitRepository),
 	)
 }
