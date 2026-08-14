@@ -12,6 +12,7 @@ import (
 	"github.com/labib0x9/sockforces/internal/infra/github"
 	rest "github.com/labib0x9/sockforces/internal/transport/http"
 	subhandler "github.com/labib0x9/sockforces/internal/transport/http/handlers/submissions"
+	"github.com/labib0x9/sockforces/internal/transport/http/middlewares"
 )
 
 func main() {
@@ -19,10 +20,12 @@ func main() {
 
 	validate := validator.New()
 
+	middleware := middlewares.NewMiddlewares(cnf)
+
 	gitClient := github.NewClient(cnf.Github)
 	gitRepo := github.NewGithubRepo(gitClient, cnf.Github)
 	subService := subservice.NewService(gitRepo)
-	subHandler := subhandler.NewHandler(subService, validate)
+	subHandler := subhandler.NewHandler(subService, validate, middleware)
 
 	server := rest.NewServer(*subHandler)
 

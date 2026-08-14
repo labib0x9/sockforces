@@ -24,7 +24,7 @@ func TestInitRepository(t *testing.T) {
 	gitClient := github.NewClient(cnf.Github)
 	gitRepo := github.NewGithubRepo(gitClient, cnf.Github)
 	subService := subservice.NewService(gitRepo)
-	handler := NewHandler(subService, validate)
+	handler := NewHandler(subService, validate, nil)
 
 	cases := []struct {
 		req    initRequest

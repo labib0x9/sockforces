@@ -9,6 +9,7 @@ import (
 
 	"github.com/labib0x9/sockforces/config"
 	"github.com/labib0x9/sockforces/internal/transport/http/handlers/submissions"
+	"github.com/labib0x9/sockforces/internal/transport/http/middlewares"
 )
 
 type Server struct {
@@ -21,14 +22,16 @@ func NewServer(subHandler submissions.Handler) *Server {
 }
 
 func (s *Server) Start(cnf *config.Config) {
+	manager := middlewares.NewManager()
 	mux := http.NewServeMux()
+	wrappedMux := manager.WrapMux(mux)
 
-	s.subHandler.RegisterRoutes(mux)
+	s.subHandler.RegisterRoutes(mux, manager)
 
 	addr := fmt.Sprintf("http://%s:%d", cnf.Addr, cnf.Port)
 	s.server = http.Server{
 		Addr:    fmt.Sprintf(":%d", cnf.Port),
-		Handler: mux,
+		Handler: wrappedMux,
 	}
 
 	fmt.Printf("Starting %s Server at %s\n", cnf.Service, addr)
