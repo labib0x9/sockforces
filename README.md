@@ -33,11 +33,16 @@ Where can this GitHub App be installed -> Only on this account
 https://github.com/organizations/<org-name>/settings/apps/<app-name> -> Get App ID
 https://github.com/organizations/<org-name>/settings/apps/<app-name> -> Generate a Private Key -> download the .pem file
 
-https://github.com/organizations/iniyaibn/settings/apps/iniyaibn-service/installations -> you will see org name and install -> click install -> you will be redireted to 
-https://github.com/organizations/iniyaibn/settings/installations/<installation id> -> save installation id
+https://github.com/organizations/<org-name>/settings/apps/<app-name>/installations -> you will see org name and install -> click install -> you will be redireted to 
+https://github.com/organizations/<org-name>/settings/installations/<installation id> -> save installation id
 ```
 
 ### Setup Lab's Repository
 ```
 repo -> settings -> mark Template repository
+```
+
+### Webhook Setup
+```
+smee -u https://smee.io/xxxxxxxxx -t http://localhost:8080/submissions/hook
 ```
