@@ -2,6 +2,7 @@ package github
 
 import (
 	"context"
+	"errors"
 
 	"github.com/google/go-github/v62/github"
 	"github.com/labib0x9/sockforces/config"
@@ -17,8 +18,8 @@ func NewGithubRepo(client *Client, cnf *config.Github) provider.GithubRepo {
 	return &githubRepo{client: client, org: cnf.Org}
 }
 
-func (g *githubRepo) CreateRepository(ctx context.Context, templateRepo, repo string) error {
-	_, _, err := g.client.Repositories.CreateFromTemplate(
+func (g *githubRepo) CreateRepository(ctx context.Context, templateRepo, repo string) (string, error) {
+	trepo, _, err := g.client.Repositories.CreateFromTemplate(
 		ctx,
 		g.org,
 		templateRepo,
@@ -28,7 +29,10 @@ func (g *githubRepo) CreateRepository(ctx context.Context, templateRepo, repo st
 			Private: new(false),
 		},
 	)
-	return err
+	if err != nil {
+		return "", err
+	}
+	return trepo.GetCloneURL(), nil
 }
 
 func (g *githubRepo) AddCollaborator(ctx context.Context, repo, username string) error {
@@ -40,4 +44,16 @@ func (g *githubRepo) AddCollaborator(ctx context.Context, repo, username string)
 		&github.RepositoryAddCollaboratorOptions{}, // default value is push
 	)
 	return err
+}
+
+func (g *githubRepo) GetTemplateRepository(labid string) string {
+	return "tcp-echo-server-template"
+}
+
+func (g *githubRepo) GetErrorMsg(err error) string {
+	var ghErr *github.ErrorResponse
+	if errors.As(err, &ghErr) {
+		return ghErr.Message
+	}
+	return ""
 }

@@ -20,7 +20,7 @@ func TestGithubRepo(t *testing.T) {
 	t.Run("Create Repository", func(t *testing.T) {
 		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 		defer cancel()
-		err := repo.CreateRepository(ctx, "tcp-echo-server-template", repoName)
+		_, err := repo.CreateRepository(ctx, "tcp-echo-server-template", repoName)
 		if err != nil {
 			t.Fatalf("Create Repository Failed: %v\n", err)
 		}
