@@ -44,5 +44,9 @@ repo -> settings -> mark Template repository
 
 ### Webhook Setup
 ```
+if lost webhook secret : goto https://github.com/organizations/<org-name>/settings/apps/<app-name> & set a new one
+
+forward using smee client:
+npm install -g smee-client
 smee -u https://smee.io/xxxxxxxxx -t http://localhost:8080/submissions/hook
 ```
