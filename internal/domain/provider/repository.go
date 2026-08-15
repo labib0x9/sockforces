@@ -7,4 +7,5 @@ type GithubRepo interface {
 	AddCollaborator(ctx context.Context, repo, username string) error
 	GetTemplateRepository(labid string) string
 	GetErrorMsg(err error) string
+	CloneRepository(ctx context.Context, fullname string, id string) (string, error)
 }

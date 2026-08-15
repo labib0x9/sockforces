@@ -3,6 +3,11 @@ package github
 import (
 	"context"
 	"errors"
+	"fmt"
+	"os"
+	"os/exec"
+	"path/filepath"
+	"time"
 
 	"github.com/google/go-github/v62/github"
 	"github.com/labib0x9/sockforces/config"
@@ -56,4 +61,34 @@ func (g *githubRepo) GetErrorMsg(err error) string {
 		return ghErr.Message
 	}
 	return ""
+}
+
+func (g *githubRepo) getToken() (string, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+	defer cancel()
+	return g.client.t.Token(ctx)
+}
+
+// id is the submission id, unique for each submission
+func (g *githubRepo) CloneRepository(ctx context.Context, fullname string, id string) (string, error) {
+	token, err := g.getToken()
+	if err != nil {
+		return "", err
+	}
+
+	repoPath := filepath.Join(os.TempDir(), id)
+	cloneURL := fmt.Sprintf("https://x-access-token:%s@github.com/%s.git", token, fullname)
+
+	cmd := exec.CommandContext(ctx, "git", "clone", cloneURL, repoPath)
+	out, err := cmd.CombinedOutput()
+	if err != nil {
+		_ = out
+		return "", err
+	}
+
+	return repoPath, nil
+}
+
+func RemoveClonedRepository(path string) error {
+	return os.RemoveAll(path)
 }

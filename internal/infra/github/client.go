@@ -11,6 +11,7 @@ import (
 
 type Client struct {
 	*git.Client
+	t *gh.Transport
 }
 
 func NewClient(cnf *config.Github) *Client {
@@ -29,5 +30,6 @@ func NewClient(cnf *config.Github) *Client {
 			Transport: transport,
 			Timeout:   10 * time.Second,
 		}),
+		t: transport,
 	}
 }
