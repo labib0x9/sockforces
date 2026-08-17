@@ -9,6 +9,12 @@ import (
 	"github.com/joho/godotenv"
 )
 
+type RabbittMQ struct {
+	Addr string
+	User string
+	Pass string
+}
+
 type Github struct {
 	AppId          int64
 	InstalationId  int64
@@ -19,10 +25,11 @@ type Github struct {
 }
 
 type Config struct {
-	Service string
-	Addr    string
-	Port    int
-	Github  *Github
+	Service  string
+	Addr     string
+	Port     int
+	Github   *Github
+	RabbitMQ *RabbittMQ
 }
 
 var (
@@ -71,6 +78,11 @@ func loadConfig(path string) {
 			Org:            fn("ORGANIZATION"),
 			HookSecret:     fn("HOOK_SECRET"),
 			HookURL:        fn("HOOKURL"),
+		},
+		RabbitMQ: &RabbittMQ{
+			Addr: fn("RMQ_ADDR"),
+			User: fn("RMQ_USER"),
+			Pass: fn("RMQ_PASS"),
 		},
 	}
 }
