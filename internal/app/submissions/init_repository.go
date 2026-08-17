@@ -23,7 +23,7 @@ func (s *service) InitRepository(ctx context.Context, username, labid string) (*
 }
 
 func generateRepositoryName(username, templateRepo string) string {
-	return fmt.Sprintf("Submission-%s-%s", username, templateRepo)
+	return fmt.Sprintf("Submission_%s_%s", username, templateRepo)
 }
 
 func (s *service) getError(err error) error {
