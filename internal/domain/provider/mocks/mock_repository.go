@@ -54,6 +54,21 @@ func (mr *MockGithubRepoMockRecorder) AddCollaborator(ctx, repo, username any) *
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddCollaborator", reflect.TypeOf((*MockGithubRepo)(nil).AddCollaborator), ctx, repo, username)
 }
 
+// CloneRepository mocks base method.
+func (m *MockGithubRepo) CloneRepository(ctx context.Context, fullname, id string) (string, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CloneRepository", ctx, fullname, id)
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CloneRepository indicates an expected call of CloneRepository.
+func (mr *MockGithubRepoMockRecorder) CloneRepository(ctx, fullname, id any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CloneRepository", reflect.TypeOf((*MockGithubRepo)(nil).CloneRepository), ctx, fullname, id)
+}
+
 // CreateRepository mocks base method.
 func (m *MockGithubRepo) CreateRepository(ctx context.Context, templateRepo, repo string) (string, error) {
 	m.ctrl.T.Helper()

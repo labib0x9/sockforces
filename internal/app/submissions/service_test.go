@@ -33,7 +33,7 @@ func TestService_InitRepository(t *testing.T) {
 			AddCollaborator(ctx, repoName, username).
 			Return(nil)
 
-		svc := NewService(gitRepo)
+		svc := NewService(gitRepo, nil)
 		result, err := svc.InitRepository(ctx, username, labid)
 
 		if err != nil {
@@ -65,7 +65,7 @@ func TestService_InitRepository(t *testing.T) {
 		// 	AddCollaborator(gomock.Any(), gomock.Any(), gomock.Any()).
 		// 	Times(0)
 
-		svc := NewService(gitRepo)
+		svc := NewService(gitRepo, nil)
 		result, err := svc.InitRepository(ctx, username, labid)
 
 		if !errors.Is(err, wantErr) {
@@ -93,7 +93,7 @@ func TestService_InitRepository(t *testing.T) {
 			AddCollaborator(ctx, repoName, username).
 			Return(wantErr)
 
-		svc := NewService(gitRepo)
+		svc := NewService(gitRepo, nil)
 		result, err := svc.InitRepository(ctx, username, labid)
 
 		if !errors.Is(err, wantErr) {
